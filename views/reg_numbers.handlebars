@@ -3,20 +3,21 @@
 <h2>PLEASE ENTER YOUR REGISTRATION NUMBERS BELOW</h2>
 <form class="" action="/reg_numbers" method="post">
   <input type="text" name="regNumberInput" value="" class="regNumberInput" placeholder="registration number">
-  <input type="submit" name="addBtn" value="ADD" class="addBtn">
+  <input type="submit" name="button" value="add" class="addBtn">
   <br/>
   <br/>
-  <input type="radio" name="city" value="all">All |
+  <input type="radio" name="city" value="All">All |
   <input type="radio" name="city" value="Bellville">Bellville |
   <input type="radio" name="city" value="Paarl">Paarl |
-  <input type="radio" name="city" value="Stellenbosch">Stellenbosch
+  <input type="radio" name="city" value="Stellenbosch">Stellenbosch |
+  <input type="radio" name="city" value="Cape Town">Cape Town
   <br/>
   <br/>
-  <input type="submit" name="filter" class="filterBtn" value="filter">
+  <input type="submit" name="button" class="filterBtn" value="filter">
 </form>
 <br/>
 <ul>
   {{#each plateList}}
-  <li class="plates">{{this}}</li>
+  <li class="plates" name="plates">{{this}}</li>
   {{/each}}
 </ul>
