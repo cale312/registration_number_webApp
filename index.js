@@ -6,17 +6,6 @@ var bodyParser = require('body-parser');
 var plateListController = require('./controllers/plateListController');
 var app = express();
 
-var db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
-db.once('open', function() {
-  console.log('We are connected');
-});
-
-mongoose.connect('mongodb://localhost/regnumbers');
-
-var plateSchema = mongoose.Schema({plate: String});
-var regnumbers = mongoose.model('regnumbers', plateSchema);
-
 app.use('/public', express.static('public'));
 app.use(bodyParser.urlencoded({ extended: false }));
 

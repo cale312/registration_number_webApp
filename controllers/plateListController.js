@@ -10,7 +10,8 @@ module.exports = function(app) {
     console.log('We are connected');
   });
 
-  mongoose.connect('mongodb://localhost/regnumbers');
+  const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/regnumbers";
+  mongoose.connect(mongoURL);
 
   var plateSchema = mongoose.Schema({plate: String});
   var regnumbers = mongoose.model('regnumbers', plateSchema);
@@ -55,7 +56,8 @@ module.exports = function(app) {
         plateList[plateInput] = 1;
         platesList.push(plateInput.toUpperCase());
         res.render('reg_numbers', {plateList: platesList});
-        res.render('reg_numbers', {plateList: platesList});
+        regnumbers.create({plate: plateInput});
+        console.log('Plate added to DB');
       }
     } else if (button === 'filter') {
       if (city) {
@@ -65,6 +67,5 @@ module.exports = function(app) {
         res.render('reg_numbers', {plateList: platesList});
       }
     }
-    // console.log(platesList);
   });
 };
