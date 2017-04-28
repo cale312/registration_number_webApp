@@ -3,6 +3,18 @@ module.exports = function(app) {
   var plateList = {};
   var platesList = [];
 
+  var mongoose = require('mongoose');
+  var db = mongoose.connection;
+  db.on('error', console.error.bind(console, 'connection error:'));
+  db.once('open', function() {
+    console.log('We are connected');
+  });
+
+  mongoose.connect('mongodb://localhost/regnumbers');
+
+  var plateSchema = mongoose.Schema({plate: String});
+  var regnumbers = mongoose.model('regnumbers', plateSchema);
+
   app.get('/', function (req, res){
     'use strict';
     res.render('reg_numbers', {});
