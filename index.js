@@ -14,10 +14,7 @@ db.once('open', function() {
 
 mongoose.connect('mongodb://localhost/regnumbers');
 
-//a 'blueprint' for how it will accept the names
 var plateSchema = mongoose.Schema({plate: String});
-
-//how it will be model in the db
 var regnumbers = mongoose.model('regnumbers', plateSchema);
 
 app.use('/public', express.static('public'));
@@ -29,7 +26,6 @@ app.set('view engine', 'handlebars');
 plateListController(app);
 
 var port = process.env.PORT || 5001;
-
 app.listen(port, function () {
   console.log('Our app is running on http://localhost:' + port);
 })

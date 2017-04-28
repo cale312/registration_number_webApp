@@ -1,14 +1,16 @@
 module.exports = function(app) {
-
+  'use strict';
   var plateList = {};
   var platesList = [];
 
   app.get('/', function (req, res){
+    'use strict';
     res.render('reg_numbers', {});
     console.log('user on route: ' + req.url);
   });
 
   app.post('/reg_numbers', function (req, res) {
+    'use strict';
     console.log('user on route: ' + req.url);
     for (var i = 0; plateList.length; i++) {}
 
@@ -17,6 +19,7 @@ module.exports = function(app) {
     var city = req.body.city;
 
     function getCity(city) {
+      'use strict';
       var filterd = [];
       for (var i = 0; i < platesList.length; i++) {
         var pList = platesList[i];
