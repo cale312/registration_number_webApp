@@ -4,10 +4,8 @@
   "description": "App to manage registration numbers",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "engines": {
-  "node": "4.2.4"
   },
   "author": "cale",
   "license": "ISC",
@@ -16,7 +14,6 @@
     "express": "^4.15.2",
     "express-handlebars": "^3.0.0",
     "mongoose": "^4.9.6",
-    "node": "0.0.0",
     "nodemon": "^1.11.0"
   }
 }

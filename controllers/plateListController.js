@@ -1,5 +1,8 @@
+'use strict';
+
 module.exports = function(app) {
   'use strict';
+
   var plateList = {};
   var platesList = [];
 
@@ -13,7 +16,7 @@ module.exports = function(app) {
   const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/regnumbers";
   mongoose.connect(mongoURL);
 
-  var plateSchema = mongoose.Schema({plate: String});
+  var plateSchema = mongoose.Schema({plate: String, plateCount: Number});
   var regnumbers = mongoose.model('regnumbers', plateSchema);
 
   app.get('/', function (req, res){
@@ -22,17 +25,18 @@ module.exports = function(app) {
     console.log('user on route: ' + req.url);
   });
 
-  app.post('/reg_numbers', function (req, res) {
-    'use strict';
+  app.post('/reg_numbers', function (req, res, next) {
+
     console.log('user on route: ' + req.url);
     for (var i = 0; plateList.length; i++) {}
 
     var plateInput = req.body.regNumberInput;
-    var button = req.body.button;
+    var add = req.body.add;
+    var filter = req.body.filter;
     var city = req.body.city;
 
     function getCity(city) {
-      'use strict';
+      //'use strict';
       var filterd = [];
       for (var i = 0; i < platesList.length; i++) {
         var pList = platesList[i];
@@ -51,20 +55,15 @@ module.exports = function(app) {
       return filterd;
     }
 
-    if (button === 'add') {
+    if (add) {
       if (plateList[plateInput] === undefined && plateInput !== "") {
-        plateList[plateInput] = 1;
-        platesList.push(plateInput.toUpperCase());
-        res.render('reg_numbers', {plateList: platesList});
-        regnumbers.create({plate: plateInput});
-        console.log('Plate added to DB');
-      }
-    } else if (button === 'filter') {
-      if (city) {
-        var getCity = getCity(city);
-        res.render('reg_numbers', {plateList: getCity});
+
       } else {
-        res.render('reg_numbers', {plateList: platesList});
+
+      }
+    } else if (filter) {
+      if (city) {
+
       }
     }
   });
