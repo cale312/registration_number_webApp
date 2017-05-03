@@ -1,10 +1,5 @@
 'use strict';
-
 module.exports = function(app) {
-  'use strict';
-
-  var plateList = {};
-  var platesList = [];
 
   var mongoose = require('mongoose');
   var db = mongoose.connection;
@@ -19,52 +14,53 @@ module.exports = function(app) {
   var plateSchema = mongoose.Schema({plate: String, plateCount: Number});
   var regnumbers = mongoose.model('regnumbers', plateSchema);
 
+  var plates = [];
+  var plateList = {};
+  for (var i = 0; i < plateList.lenght; i++) {}
+
+  //search if plate already exists in the database
+  function managePlates(newPlate, fn) {
+    regnumbers.findOne({plate: newPlate}, function(err, plateFound) {
+      if (plateFound) {
+        regnumbers.update({plate: newPlate}, {plateCount: Number(plateFound.plateCount) + 1}, fn);
+        return;
+      } else {
+        regnumbers.create({plate: newPlate, plateCount: 1}, fn);
+        return;
+      }
+    });
+  }
+
   app.get('/', function (req, res){
-    'use strict';
     res.render('reg_numbers', {});
     console.log('user on route: ' + req.url);
   });
 
   app.post('/reg_numbers', function (req, res, next) {
-
     console.log('user on route: ' + req.url);
-    for (var i = 0; plateList.length; i++) {}
-
-    var plateInput = req.body.regNumberInput;
+    var newPlate = req.body.regNumberInput;
     var add = req.body.add;
     var filter = req.body.filter;
-    var city = req.body.city;
 
-    function getCity(city) {
-      //'use strict';
-      var filterd = [];
-      for (var i = 0; i < platesList.length; i++) {
-        var pList = platesList[i];
-        if (city === 'Cape Town' && pList.startsWith('CA')) {
-          filterd.push(pList);
-        } else if (city === 'Paarl' && pList.startsWith('CJ')) {
-          filterd.push(pList);
-        } else if (city === 'Bellville' && pList.startsWith('CY')) {
-          filterd.push(pList);
-        } else if (city === 'Stellenbosch' && pList.startsWith('CL')) {
-          filterd.push(pList);
-        } else if (city === 'All') {
-          filterd.push(pList);
-        }
+    regnumbers.find({}, function(err, plateNumber) {
+      for (var i = 0; i < plateNumber.length; i++) {
+        var curObj = plateNumber[i].plate;
       }
-      return filterd;
+    });
+
+    if (add && plateList[newPlate] === undefined && newPlate !== "") {
+      plateList[newPlate] = 1;
+      plates.push(newPlate);
+      res.render('reg_numbers', {plate: plates});
+      managePlates(newPlate)
+    } else {
+      res.render('reg_numbers', {plate: plates});
     }
+    console.log(plates);
+  });
 
-    if (add) {
-      if (plateList[plateInput] === undefined && plateInput !== "") {
+  app.delete('/reg_numbers', function (req, res) {
+    console.log('user on route: ' + req.url);
 
-      } else {
-
-      }
-    } else if (filter) {
-      if (city) {
-
-      }
-    }
   });
 };
