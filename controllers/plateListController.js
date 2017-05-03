@@ -47,16 +47,17 @@ module.exports = function(app) {
         var curObj = plateNumber[i].plate;
       }
     });
-
-    if (add && plateList[newPlate] === undefined && newPlate !== "") {
-      plateList[newPlate] = 1;
-      plates.push(newPlate);
-      res.render('reg_numbers', {plate: plates});
-      managePlates(newPlate)
-    } else {
-      res.render('reg_numbers', {plate: plates});
+    if (add) {
+      if (plateList[newPlate] === undefined && newPlate !== "") {
+        plateList[newPlate] = 1;
+        plates.push(newPlate);
+        res.render('reg_numbers', {plate: plates});
+        managePlates(newPlate)
+        console.log(plates);
+      } else {
+        res.render('reg_numbers', {plate: plates});
+      }
     }
-    console.log(plates);
   });
 
   app.delete('/reg_numbers', function (req, res) {
