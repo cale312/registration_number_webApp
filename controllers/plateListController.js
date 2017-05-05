@@ -29,87 +29,83 @@ module.exports = function(app) {
       if (plateFound) {
         regnumbers.update({
           plate: newPlate,
-          plateCount: Number(plateFound.plateCount) + 1
+          plateCount: plateFound.plateCount + 1
         }, fn);
         return;
       } else {
-        regnumbers.create({
-          plate: newPlate,
-          plateCount: 1
-        }, fn);
+        regnumbers.create({ plate: newPlate, plateCount: 1}, fn);
         return;
       }
     });
   }
 
   var filterdPlates = [];
+  var DBPlates = [];
+
+  regnumbers.find({}, function(err, plate) {
+    for (var i = 0; i < plate.length; i++) {
+      var dbPlate = plate[i].plate;
+      DBPlates.push(dbPlate);
+    }
+    console.log(DBPlates);
+  });
 
   function getPlates(city) {
-    for (var i = 0; i < plates.length; i++) {
-      var curPlate = plates[i];
+    filterdPlates = [];
+
+    for (var i = 0; i < DBPlates.length; i++) {
+      var curPlate = DBPlates[i];
       if (city === 'Stellenbosch' && curPlate.startsWith('cl')) {
-        filterdPlates = [curPlate];
+        filterdPlates.push(curPlate);
       } else if (city === 'Cape Town' && curPlate.startsWith('ca')) {
-        filterdPlates = [curPlate];
+        filterdPlates.push(curPlate);
       } else if (city === 'Bellville' && curPlate.startsWith('cy')) {
-        filterdPlates = [curPlate];
+        filterdPlates.push(curPlate);
       } else if (city === 'Paarl' && curPlate.startsWith('cj')) {
-        filterdPlates = [curPlate];
-      } else {
-        filterdPlates = plates;
+        filterdPlates.push(curPlate);
+      } else if (city === 'All') {
+        filterdPlates = DBPlates;
       }
     }
     return filterdPlates;
   }
 
   app.get('/', function(req, res) {
-    res.render('reg_numbers', {});
+    res.render('reg_numbers', {plate: DBPlates});
     console.log('user on route: ' + req.url);
   });
 
   app.post('/reg_numbers', function(req, res, next) {
     console.log('user on route: ' + req.url);
     var newPlate = req.body.regNumberInput;
+    var newPlateToRemove = req.body.plateToRemove;
     var add = req.body.add;
     var filter = req.body.filter;
     var city = req.body.city;
+    var remove = req.body.removePlate;
 
     if (add) {
       if (plateList[newPlate] === undefined && newPlate !== "") {
         plateList[newPlate] = 1;
-        plates.push(newPlate);
+        DBPlates.push(newPlate);
         res.render('reg_numbers', {
-          plate: plates
+          plate: DBPlates
         });
-        managePlates(newPlate, function(err, data) {
-          if (err) {
-            return next(err);
-          }
-        });
-        console.log(plates);
+        managePlates(newPlate, function(err) {if (err) {console.log(err);}});
       } else {
-        res.render('reg_numbers', {
-          plate: plates
-        });
+        res.render('reg_numbers', { plate: DBPlates});
       }
     } else if (filter) {
       if (city) {
-        // getPlates(city);
         var getPlatesResults = getPlates(city);
-        res.render('reg_numbers', {
-          plate: getPlatesResults
-        });
+        res.render('reg_numbers', {plate: getPlatesResults});
       } else {
         res.render('reg_numbers', {
-          plate: plates
+          plate: DBPlates
         });
       }
-      console.log(filterdPlates);
+    } else if (remove) {
+
     }
-  });
-
-  app.delete('/reg_numbers', function(req, res) {
-    console.log('user on route: ' + req.url);
-
   });
 };
