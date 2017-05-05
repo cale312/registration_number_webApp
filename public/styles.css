@@ -34,7 +34,7 @@ hr {clear: both; width: 800px;}
   cursor: pointer;
 }
 .addBtn:hover, .filterBtn:hover {background: white; box-shadow: 0px 0px 5px;}
-.regNumberInput {
+.regNumberInput, .plateToRemove {
   padding: 5px;
   text-align: center;
   text-transform: uppercase;
