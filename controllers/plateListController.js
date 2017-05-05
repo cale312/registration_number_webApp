@@ -2,7 +2,7 @@
 module.exports = function(app) {
   var mongoose = require('mongoose');
   var db = mongoose.connection;
-  
+
   db.on('error', console.error.bind(console, 'connection error:'));
   db.once('open', function() {
     console.log('We are connected');
@@ -78,11 +78,9 @@ module.exports = function(app) {
   app.post('/reg_numbers', function(req, res, next) {
     console.log('user on route: ' + req.url);
     var newPlate = req.body.regNumberInput;
-    var newPlateToRemove = req.body.plateToRemove;
     var add = req.body.add;
     var filter = req.body.filter;
     var city = req.body.city;
-    var remove = req.body.removePlate;
 
     if (add) {
       if (plateList[newPlate] === undefined && newPlate !== "") {
@@ -104,8 +102,6 @@ module.exports = function(app) {
           plate: DBPlates
         });
       }
-    } else if (remove) {
-
     }
   });
 };
