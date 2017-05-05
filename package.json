@@ -2,7 +2,7 @@
   "name": "regnumber-webapp",
   "version": "1.0.0",
   "description": "App to manage registration numbers",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
