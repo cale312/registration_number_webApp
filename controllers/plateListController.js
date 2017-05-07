@@ -31,7 +31,7 @@ module.exports = function(app) {
       if (plateFound) {
         regnumbers.update({
           plate: newPlate,
-          plateCount: plateFound.plateCount + 1
+          $inc: {plateCount: 1}
         }, fn);
         return;
       } else {
@@ -44,13 +44,19 @@ module.exports = function(app) {
   var filterdPlates = [];
   var DBPlates = [];
 
-  regnumbers.find({}, function(err, plate) {
-    for (var i = 0; i < plate.length; i++) {
-      var dbPlate = plate[i].plate;
-      DBPlates.push(dbPlate);
-    }
-    console.log(DBPlates);
-  });
+  function reloadPlates() {
+    regnumbers.find({}, function(err, plate) {
+      for (var i = 0; i < plate.length; i++) {
+        var dbPlate = plate[i].plate;
+        plateList[dbPlate] = 1;
+        DBPlates.push(dbPlate);
+      }
+      // console.log(DBPlates);
+      return DBPlates;
+    });
+  }
+
+  reloadPlates();
 
   function getPlates(city) {
     filterdPlates = [];
@@ -72,6 +78,19 @@ module.exports = function(app) {
     return filterdPlates;
   }
 
+  function deletePlate(delPlate, fn) {
+    var delPlate = delPlate.toLowerCase();
+    regnumbers.findOneAndRemove({plate: delPlate}, function(err) {
+      if (err) {
+        console.log(err);
+        return;
+      } else {
+        console.log('Plate removed from db');
+        return;
+      }
+    });
+  }
+
   app.get('/', function(req, res) {
     res.render('reg_numbers', {plate: DBPlates});
     console.log('user on route: ' + req.url);
@@ -80,20 +99,23 @@ module.exports = function(app) {
   app.post('/reg_numbers', function(req, res, next) {
     console.log('user on route: ' + req.url);
     var newPlate = req.body.regNumberInput;
+    var delPlate = req.body.plateToDelete;
     var add = req.body.add;
+    var del = req.body.delete;
     var filter = req.body.filter;
     var city = req.body.city;
 
     if (add) {
       if (plateList[newPlate] === undefined && newPlate !== "") {
+        newPlate = newPlate.toLowerCase();
+        managePlates(newPlate, function(err) {if (err) {console.log(err);}});
         plateList[newPlate] = 1;
         DBPlates.push(newPlate);
         res.render('reg_numbers', {
           plate: DBPlates
         });
-        managePlates(newPlate, function(err) {if (err) {console.log(err);}});
       } else {
-        res.render('reg_numbers', { plate: DBPlates});
+        res.render('reg_numbers', {plate: DBPlates});
       }
     } else if (filter) {
       if (city) {
