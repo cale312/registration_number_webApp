@@ -2,7 +2,6 @@
 module.exports = function(app) {
   var mongoose = require('mongoose');
 
-
   const mongoURL = process.env.MONGO_DB_URL || "mongodb://localhost/regnumbers";
   mongoose.connect(mongoURL);
 
