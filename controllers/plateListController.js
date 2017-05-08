@@ -55,6 +55,7 @@ module.exports = function(app) {
         plateList[dbPlate] = 1;
         DBPlates.push(dbPlate);
       }
+      console.log(DBPlates);
     });
   }
 
@@ -65,13 +66,13 @@ module.exports = function(app) {
 
     for (var i = 0; i < DBPlates.length; i++) {
       var curPlate = DBPlates[i];
-      if (city === 'Stellenbosch' && curPlate.startsWith('CL')) {
+      if (city === 'Stellenbosch' && curPlate.startsWith('cl')) {
         filterdPlates.push(curPlate);
-      } else if (city === 'Cape Town' && curPlate.startsWith('CA')) {
+      } else if (city === 'Cape Town' && curPlate.startsWith('ca')) {
         filterdPlates.push(curPlate);
-      } else if (city === 'Bellville' && curPlate.startsWith('CY')) {
+      } else if (city === 'Bellville' && curPlate.startsWith('cy')) {
         filterdPlates.push(curPlate);
-      } else if (city === 'Paarl' && curPlate.startsWith('CJ')) {
+      } else if (city === 'Paarl' && curPlate.startsWith('cj')) {
         filterdPlates.push(curPlate);
       } else if (city === 'All') {
         filterdPlates = DBPlates;
@@ -103,7 +104,6 @@ module.exports = function(app) {
   });
 
   app.post('/reg_numbers', function(req, res, next) {
-    // city = req.params.city;
     console.log('user on route: ' + req.url);
     var newPlate = req.body.regNumberInput;
     var delPlate = req.body.plateToDelete;
@@ -114,7 +114,7 @@ module.exports = function(app) {
 
     if (add) {
       if (plateList[newPlate] === undefined && newPlate !== "") {
-        newPlate = newPlatetoUpperCase();
+        newPlate = newPlate.toLowerCase();
         managePlates(newPlate, function(err) {
           if (err) {
             console.log(err);
@@ -122,6 +122,7 @@ module.exports = function(app) {
         });
         plateList[newPlate] = 1;
         DBPlates.push(newPlate);
+        console.log(DBPlates);
         res.render('reg_numbers', {
           plate: DBPlates
         });
@@ -143,7 +144,7 @@ module.exports = function(app) {
       }
     } else if (del) {
       if (delPlate) {
-        delPlate = delPlate.toUpperCase();
+        delPlate = delPlate.toLowerCase();
         DBPlates = [];
         delete plateList[delPlate];
         deletePlate(delPlate);
