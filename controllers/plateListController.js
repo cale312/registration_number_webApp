@@ -114,7 +114,7 @@ module.exports = function(app) {
 
     if (add) {
       if (plateList[newPlate] === undefined && newPlate !== "") {
-        newPlate = newPlate.toLowerCase();
+        newPlate = newPlatetoUpperCase();
         managePlates(newPlate, function(err) {
           if (err) {
             console.log(err);
@@ -143,7 +143,7 @@ module.exports = function(app) {
       }
     } else if (del) {
       if (delPlate) {
-        delPlate = delPlate.toLowerCase();
+        delPlate = delPlate.toUpperCase();
         DBPlates = [];
         delete plateList[delPlate];
         deletePlate(delPlate);
