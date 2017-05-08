@@ -65,13 +65,13 @@ module.exports = function(app) {
 
     for (var i = 0; i < DBPlates.length; i++) {
       var curPlate = DBPlates[i];
-      if (city === 'Stellenbosch' && curPlate.startsWith('cl')) {
+      if (city === 'Stellenbosch' && curPlate.startsWith('CL')) {
         filterdPlates.push(curPlate);
-      } else if (city === 'Cape Town' && curPlate.startsWith('ca')) {
+      } else if (city === 'Cape Town' && curPlate.startsWith('CA')) {
         filterdPlates.push(curPlate);
-      } else if (city === 'Bellville' && curPlate.startsWith('cy')) {
+      } else if (city === 'Bellville' && curPlate.startsWith('CY')) {
         filterdPlates.push(curPlate);
-      } else if (city === 'Paarl' && curPlate.startsWith('cj')) {
+      } else if (city === 'Paarl' && curPlate.startsWith('CJ')) {
         filterdPlates.push(curPlate);
       } else if (city === 'All') {
         filterdPlates = DBPlates;
