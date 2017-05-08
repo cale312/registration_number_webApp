@@ -51,8 +51,6 @@ module.exports = function(app) {
         plateList[dbPlate] = 1;
         DBPlates.push(dbPlate);
       }
-      // console.log(DBPlates);
-      return DBPlates;
     });
   }
 
@@ -79,7 +77,7 @@ module.exports = function(app) {
   }
 
   function deletePlate(delPlate, fn) {
-    var delPlate = delPlate.toLowerCase();
+    var delPlate = delPlate;
     regnumbers.findOneAndRemove({plate: delPlate}, function(err) {
       if (err) {
         console.log(err);
@@ -97,6 +95,7 @@ module.exports = function(app) {
   });
 
   app.post('/reg_numbers', function(req, res, next) {
+    // city = req.params.city;
     console.log('user on route: ' + req.url);
     var newPlate = req.body.regNumberInput;
     var delPlate = req.body.plateToDelete;
@@ -125,6 +124,17 @@ module.exports = function(app) {
         res.render('reg_numbers', {
           plate: DBPlates
         });
+      }
+    } else if (del) {
+      if (delPlate) {
+        delPlate = delPlate.toLowerCase();
+        DBPlates = [];
+        delete plateList[delPlate];
+        deletePlate(delPlate);
+        reloadPlates();
+        res.render('reg_numbers', {plate: DBPlates});
+      } else {
+        res.render('reg_numbers', {plate: DBPlates});
       }
     }
   });
