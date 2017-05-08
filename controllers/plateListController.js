@@ -30,11 +30,16 @@ module.exports = function(app) {
       if (plateFound) {
         regnumbers.update({
           plate: newPlate,
-          $inc: {plateCount: 1}
+          $inc: {
+            plateCount: 1
+          }
         }, fn);
         return;
       } else {
-        regnumbers.create({ plate: newPlate, plateCount: 1}, fn);
+        regnumbers.create({
+          plate: newPlate,
+          plateCount: 1
+        }, fn);
         return;
       }
     });
@@ -77,7 +82,9 @@ module.exports = function(app) {
 
   function deletePlate(delPlate, fn) {
     var delPlate = delPlate;
-    regnumbers.findOneAndRemove({plate: delPlate}, function(err) {
+    regnumbers.findOneAndRemove({
+      plate: delPlate
+    }, function(err) {
       if (err) {
         console.log(err);
         return;
@@ -89,7 +96,9 @@ module.exports = function(app) {
   }
 
   app.get('/', function(req, res) {
-    res.render('reg_numbers', {plate: DBPlates});
+    res.render('reg_numbers', {
+      plate: DBPlates
+    });
     console.log('user on route: ' + req.url);
   });
 
@@ -106,19 +115,27 @@ module.exports = function(app) {
     if (add) {
       if (plateList[newPlate] === undefined && newPlate !== "") {
         newPlate = newPlate.toLowerCase();
-        managePlates(newPlate, function(err) {if (err) {console.log(err);}});
+        managePlates(newPlate, function(err) {
+          if (err) {
+            console.log(err);
+          }
+        });
         plateList[newPlate] = 1;
         DBPlates.push(newPlate);
         res.render('reg_numbers', {
           plate: DBPlates
         });
       } else {
-        res.render('reg_numbers', {plate: DBPlates});
+        res.render('reg_numbers', {
+          plate: DBPlates
+        });
       }
     } else if (filter) {
       if (city) {
         var getPlatesResults = getPlates(city);
-        res.render('reg_numbers', {plate: getPlatesResults});
+        res.render('reg_numbers', {
+          plate: getPlatesResults
+        });
       } else {
         res.render('reg_numbers', {
           plate: DBPlates
@@ -131,9 +148,13 @@ module.exports = function(app) {
         delete plateList[delPlate];
         deletePlate(delPlate);
         reloadPlates();
-        res.render('reg_numbers', {plate: DBPlates});
+        res.render('reg_numbers', {
+          plate: DBPlates
+        });
       } else {
-        res.render('reg_numbers', {plate: DBPlates});
+        res.render('reg_numbers', {
+          plate: DBPlates
+        });
       }
     }
   });
