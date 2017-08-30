@@ -50,4 +50,4 @@
 2. navigate to the folder you cloned
 3. type in the terminal `npm install` to install all the dependencies in the package.json file
 	>Npm is a Node Package Manager which comes with installing the node package
-4. once all packages have been installed type in `nodemon`, it should print something like `Our app is running on http://localhost:4000`
+4. once all packages have been installed now type in `nodemon` to start the app, it should print something like `Our app is running on http://localhost:4000`
