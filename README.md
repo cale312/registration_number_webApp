@@ -7,16 +7,12 @@
   * delete aregistration number
   
 ## Prerequisites
-
-  * NodeJS
-    >NodeJS
-    
-  * Git
-    >Git
-
-    
-  * Robomongo
-    >Robomongo
+  * NodeJS 
+  	>NodeJS is an open-source, cross-platform JavaScript run-time environment for executing JavaScript code server-side.
+  * Git 
+  	>Git is a version control system for tracking changes in computer files and coordinating work on those files among multiple people
+  * Robomongo 
+  	>Robomongo is a free lightweight GUI for MongoDB enthusiasts.
     
 ### Installing Node
 
